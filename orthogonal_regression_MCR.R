@@ -1,9 +1,11 @@
 library (tidyverse)
 library (mcr)
+library (pastecs)
+library(psych)
 
 # loading and treating data
 
-data <- read.csv('raw_data.csv', stringsAsFactors = T) # load data from file.csv
+data <- read.csv('data.csv', stringsAsFactors = T) # load data from file.csv
 data <- janitor::clean_names(data)    # clean names using janitor
 
 colnames(data)[1] <- "rep"    # change repetition to rep
@@ -13,25 +15,194 @@ data[,1:3] <- lapply(data[, 1:3], factor)  # change int to factor for rep, temp 
 view(data)
 glimpse(data)   #check data structure
 
+# subset dataframe by Temp factor level
+
+temp_10 <- data[data$temp == '10',]
+temp_15 <- data[data$temp == '15',]
+temp_20 <- data[data$temp == '20',]
+temp_30 <- data[data$temp == '30',]
+
 # assign x and y 
 
-x <- data$medlyn
-y <- data$gs
+x_10 <- temp_10$medlyn 
+y_10 <- temp_10$gs
+x_15 <- temp_15$medlyn 
+y_15 <- temp_15$gs
+x_20 <- temp_20$medlyn 
+y_20 <- temp_20$gs
+x_30 <- temp_30$medlyn 
+y_30 <- temp_30$gs
+
+                                   ###     ### 
+###################################### 10C #####################################
+                                 ####      ####
+
+# Descriptive Statistics
+
+descriptive_10 <- stat.desc(temp_10[, 4:5])  # Find CV and error.ratio to add in Deming regression
+View(descriptive_10)
+
+psych::describeBy(data, data$temp)
+
+
+# Calculate CV ratio to add as error.ratio in Deming regression
+
+CV_ratio_10 <- as_tibble(descriptive_10[14,]) %>%  # Define as tbl class
+ mutate(ratio = medlyn/gs)
+
+Error_ratio_10 <- as.numeric(CV_ratio_10[,3])
+view(Error_ratio_10)
 
 # Performing Deming regression fit using MCR package
 
-ort_reg <- mcreg(x, y, error.ratio = 1, method.reg = "Deming",
-                 method.ci = "analytical", mref.name = "medlyn", 
-                 mtest.name = "gs", na.rm = T)
+dem_reg_10 <- mcreg(x_10, y_10, error.ratio = Error_ratio_10, method.reg = "Deming",
+                 method.ci = "analytical", 
+                 mref.name = "(A/C.asqrt(D))", 
+                 mtest.name = "gs", 
+                 na.rm = T)
 
-printSummary(ort_reg)
-getCoefficients(ort_reg)
-plot(ort_reg)
+printSummary(dem_reg_10)
+getCoefficients(dem_reg)
+str(dem_reg)
 
-plot(ort_reg, add.legend=FALSE,
-     points.pch = 19, ci.area = TRUE, add.cor = T, digits = list(coef = 2, cor = 3),
-     ci.area.col = grey(0.9), identity=F, add.grid=F, sub="")
+plot(dem_reg_10)
 
+plot(dem_reg_10,
+     add.legend=TRUE,
+     points.pch = 19, ci.area = F, add.cor = T, 
+     digits = list(coef = 3, cor = 3),
+     ci.area.col = grey(0.9), 
+     identity=F, add.grid=F, sub="")
+     
+
+MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+              digits = list(coef = 3, cor = 3),
+              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              ci.area = F, ci.area.col = "#0000FF50", 
+              identity = F,
+              main = "10oC", sub = "", 
+              add.grid = FALSE, points.cex = 1.5)
+
+
+                                    ###     ### 
+###################################### 15C #####################################
+                                 ####      ####
+
+# Descriptive Statistics
+
+descriptive_15 <- stat.desc(temp_15[, 4:5])  # Find CV and error.ratio to add in Deming regression
+View(descriptive_15)
+
+
+# Calculate CV ratio to add as error.ratio in Deming regression
+
+CV_ratio_15 <- as_tibble(descriptive_15[14,]) %>%  # Define as tbl class
+  mutate(ratio = medlyn/gs)
+
+Error_ratio_15 <- as.numeric(CV_ratio_15[,3])
+view(Error_ratio_15)
+
+# Performing Deming regression fit using MCR package
+
+dem_reg_15 <- mcreg(x_15, y_15, error.ratio = Error_ratio_15, method.reg = "Deming",
+                    method.ci = "analytical", 
+                    mref.name = "(A/C.asqrt(D))", 
+                    mtest.name = "gs", 
+                    na.rm = T)
+
+printSummary(dem_reg_10)
+getCoefficients(dem_reg)
+str(dem_reg)
+
+plot(dem_reg_15)
+
+plot(dem_reg_15,
+     add.legend=TRUE,
+     points.pch = 19, ci.area = F, add.cor = T, 
+     digits = list(coef = 3, cor = 3),
+     ci.area.col = grey(0.9), 
+     identity=F, add.grid=F, sub="")
+
+
+MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+              ylim = c(0, 0.3),
+              digits = list(coef = 3, cor = 3),
+              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              ci.area = F, ci.area.col = "#0000FF50", 
+              identity = F,
+              main = "15oC", sub = "", 
+              add.grid = FALSE, points.cex = 1.5)
+
+
+
+                                    ###     ### 
+###################################### 20C #####################################
+                                 ####      ####
+
+# Descriptive Statistics
+
+descriptive_20 <- stat.desc(temp_20[, 4:5])  # Find CV and error.ratio to add in Deming regression
+View(descriptive_20)
+
+
+# Calculate CV ratio to add as error.ratio in Deming regression
+
+CV_ratio_20 <- as_tibble(descriptive_20[14,]) %>%  # Define as tbl class
+  mutate(ratio = medlyn/gs)
+
+Error_ratio_20 <- as.numeric(CV_ratio_20[,3])
+view(Error_ratio_20)
+
+# Performing Deming regression fit using MCR package
+
+dem_reg_20 <- mcreg(x_20, y_20, error.ratio = Error_ratio_20, method.reg = "Deming",
+                    method.ci = "analytical", 
+                    mref.name = "(A/C.asqrt(D))", 
+                    mtest.name = "gs", 
+                    na.rm = T)
+
+printSummary(dem_reg_20)
+getCoefficients(dem_reg)
+str(dem_reg)
+
+plot(dem_reg_20)
+
+plot(dem_reg_20,
+     add.legend=TRUE,
+     points.pch = 19, ci.area = F, add.cor = T, 
+     digits = list(coef = 3, cor = 3),
+     ci.area.col = grey(0.9), 
+     identity=F, add.grid=F, sub="")
+
+
+MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+              ylim = c(0, 0.3),
+              digits = list(coef = 3, cor = 3),
+              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              ci.area = F, ci.area.col = "#0000FF50", 
+              identity = F,
+              main = "20oC", sub = "", 
+              add.grid = FALSE, points.cex = 1.5)
+
+
+#### test multiplot ######
+plot(dem_reg_10, add.legend=F, 
+     main="Deming 10 and 15",
+     points.pch=19, ci.area=F, ci.area.col=grey(0.9),
+     add.grid=F, 
+     identity=F,
+     sub="")
+
+plot(dem_reg_20, area=F, ci.area=F,ci.border=F, ci.border.col="red3",
+     reg.col="red3", add.legend=F, draw.points=T, add=T)
+
+includeLegend(place="topleft", models=list(dem_reg_10, dem_reg_20),
+              colors=c("darkblue", "red"), design = "1",  
+               digits=2)
+
+
+
+############################Copiar 30C ############
 
 # plotting data
 
