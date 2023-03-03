@@ -62,15 +62,16 @@ dem_reg_10 <- mcreg(x_10, y_10, error.ratio = Error_ratio_10, method.reg = "Demi
                  na.rm = T)
 
 printSummary(dem_reg_10)
-getCoefficients(dem_reg)
-str(dem_reg)
+getCoefficients(dem_reg_10)
 
-plot(dem_reg_10)
+
+plot(dem_reg_10, main="10")
 
 plot(dem_reg_10,
      add.legend=TRUE,
      points.pch = 19, ci.area = F, add.cor = T, 
      digits = list(coef = 3, cor = 3),
+     main="10",
      ci.area.col = grey(0.9), 
      identity=F, add.grid=F, sub="")
      
@@ -80,7 +81,7 @@ MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)",
               y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               identity = F,
-              main = "10oC", sub = "", 
+              main = "10", sub = "", 
               add.grid = FALSE, points.cex = 1.5)
 
 
@@ -110,27 +111,30 @@ dem_reg_15 <- mcreg(x_15, y_15, error.ratio = Error_ratio_15, method.reg = "Demi
                     mtest.name = "gs", 
                     na.rm = T)
 
-printSummary(dem_reg_10)
-getCoefficients(dem_reg)
-str(dem_reg)
+printSummary(dem_reg_15)
+getCoefficients(dem_reg_15)
 
-plot(dem_reg_15)
+plot(dem_reg_15, main="15")
 
 plot(dem_reg_15,
      add.legend=TRUE,
      points.pch = 19, ci.area = F, add.cor = T, 
      digits = list(coef = 3, cor = 3),
      ci.area.col = grey(0.9), 
+     main ="15",
      identity=F, add.grid=F, sub="")
 
 
-MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+MCResult.plot(dem_reg_15, equal.axis = F, x.lab = "A/C.asqrt(D)", 
               ylim = c(0, 0.3),
               digits = list(coef = 3, cor = 3),
-              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              y.lab = "gs", points.col = "red", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
+              reg.col = "red",
               identity = F,
-              main = "15oC", sub = "", 
+              add=F,
+              sub = "", 
+              main = "15",
               add.grid = FALSE, points.cex = 1.5)
 
 
@@ -181,20 +185,11 @@ MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)",
               y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               identity = F,
+              add=F,
               main = "20oC", sub = "", 
               add.grid = FALSE, points.cex = 1.5)
 
 
-#### test multiplot ######
-plot(dem_reg_10, add.legend=F, 
-     main="Deming 10 and 15",
-     points.pch=19, ci.area=F, ci.area.col=grey(0.9),
-     add.grid=F, 
-     identity=F,
-     sub="")
-
-plot(dem_reg_20, area=F, ci.area=F,ci.border=F, ci.border.col="red3",
-     reg.col="red3", add.legend=F, draw.points=T, add=T)
 
 includeLegend(place="topleft", models=list(dem_reg_10, dem_reg_20),
               colors=c("darkblue", "red"), design = "1",  
