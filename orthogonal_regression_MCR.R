@@ -65,7 +65,7 @@ printSummary(dem_reg_10)
 getCoefficients(dem_reg_10)
 
 
-plot(dem_reg_10, main="10")
+plot(dem_reg_10, main="10C")
 
 plot(dem_reg_10,
      add.legend=TRUE,
@@ -166,8 +166,8 @@ dem_reg_20 <- mcreg(x_20, y_20, error.ratio = Error_ratio_20, method.reg = "Demi
                     na.rm = T)
 
 printSummary(dem_reg_20)
-getCoefficients(dem_reg)
-str(dem_reg)
+getCoefficients(dem_reg_20)
+str(dem_reg_20)
 
 plot(dem_reg_20)
 
@@ -197,7 +197,61 @@ includeLegend(place="topleft", models=list(dem_reg_10, dem_reg_20),
 
 
 
-############################Copiar 30C ############
+############################Copiar 30C #########################################
+
+# Descriptive Statistics
+
+descriptive_30 <- stat.desc(temp_30[, 4:5])  # Find CV and error.ratio to add in Deming regression
+View(descriptive_30)
+
+
+# Calculate CV ratio to add as error.ratio in Deming regression
+
+CV_ratio_30 <- as_tibble(descriptive_30[14,]) %>%  # Define as tbl class
+  mutate(ratio = medlyn/gs)
+
+Error_ratio_30 <- as.numeric(CV_ratio_30[,3])
+view(Error_ratio_30)
+
+# Performing Deming regression fit using MCR package
+
+dem_reg_30 <- mcreg(x_30, y_30, error.ratio = Error_ratio_30, method.reg = "Deming",
+                    method.ci = "analytical", 
+                    mref.name = "(A/C.asqrt(D))", 
+                    mtest.name = "gs", 
+                    na.rm = T)
+
+printSummary(dem_reg_30)
+getCoefficients(dem_reg_30)
+str(dem_reg_30)
+
+plot(dem_reg_20)
+
+plot(dem_reg_20,
+     add.legend=TRUE,
+     points.pch = 19, ci.area = F, add.cor = T, 
+     digits = list(coef = 3, cor = 3),
+     ci.area.col = grey(0.9), 
+     identity=F, add.grid=F, sub="")
+
+
+MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+              ylim = c(0, 0.3),
+              digits = list(coef = 3, cor = 3),
+              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              ci.area = F, ci.area.col = "#0000FF50", 
+              identity = F,
+              add=F,
+              main = "20oC", sub = "", 
+              add.grid = FALSE, points.cex = 1.5)
+
+
+
+includeLegend(place="topleft", models=list(dem_reg_10, dem_reg_20),
+              colors=c("darkblue", "red"), design = "1",  
+              digits=2)
+
+##########################R2 and significance #################################
 
 # plotting data
 
@@ -221,10 +275,17 @@ intercept
 
 # R2 
 
-r2 <- lm(y ~ x)
-summary(r2)
+r2_10 <- lm(y_10 ~ x_10)
+summary(r2_10)
 
 
+r2_15 <- lm(y_15 ~ x_15)
+summary(r2_15)
 
 
- 
+r2_20 <- lm(y_20 ~ x_20)
+summary(r2_20)
+
+
+r2_30 <- lm(y_30 ~ x_30)
+summary(r2_30)

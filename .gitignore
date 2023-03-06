@@ -3,7 +3,5 @@
 .Rdata
 .httr-oauth
 .DS_Store
-10C.png
-15C.png
-20C.png
-draft_combining_temps.png
+*.png
+*.pdf
