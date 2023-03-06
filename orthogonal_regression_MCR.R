@@ -289,3 +289,6 @@ summary(r2_20)
 
 r2_30 <- lm(y_30 ~ x_30)
 summary(r2_30)
+
+#end#
+
