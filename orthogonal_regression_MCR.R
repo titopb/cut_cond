@@ -76,9 +76,12 @@ plot(dem_reg_10,
      identity=F, add.grid=F, sub="")
      
 
-MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
+MCResult.plot(dem_reg_10, equal.axis = F, 
+              ylim = c(0, 0.5),
               digits = list(coef = 3, cor = 3),
-              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              y.lab = ~ g[s] *  " ( mol " * m^-2 * " " * s^-1 * ")",
+              x.lab = expression("A/Ca" ~ sqrt(VPD)), 
+              points.col = "#FF7F5060", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               identity = F,
               main = "10", sub = "", 
@@ -125,16 +128,18 @@ plot(dem_reg_15,
      identity=F, add.grid=F, sub="")
 
 
-MCResult.plot(dem_reg_15, equal.axis = F, x.lab = "A/C.asqrt(D)", 
-              ylim = c(0, 0.3),
+MCResult.plot(dem_reg_15, equal.axis = F, 
+              ylim = c(0, 0.5),
               digits = list(coef = 3, cor = 3),
-              y.lab = "gs", points.col = "red", points.pch = 19, 
+              y.lab = ~ g[s] *  " ( mol " * m^-2 * " " * s^-1 * ")",
+              x.lab = expression("A/Ca" ~ sqrt(VPD)),
+              points.col = "red", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               reg.col = "red",
               identity = F,
               add=F,
               sub = "", 
-              main = "15",
+              main = "15C",
               add.grid = FALSE, points.cex = 1.5)
 
 
@@ -179,10 +184,12 @@ plot(dem_reg_20,
      identity=F, add.grid=F, sub="")
 
 
-MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
-              ylim = c(0, 0.3),
+MCResult.plot(dem_reg_20, equal.axis = F, 
+              ylim = c(0, 0.5),
               digits = list(coef = 3, cor = 3),
-              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              y.lab = ~ g[s] *  " ( mol " * m^-2 * " " * s^-1 * ")",
+              x.lab = expression("A/Ca" ~ sqrt(VPD)),
+              points.col = "green", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               identity = F,
               add=F,
@@ -225,9 +232,9 @@ printSummary(dem_reg_30)
 getCoefficients(dem_reg_30)
 str(dem_reg_30)
 
-plot(dem_reg_20)
+plot(dem_reg_30)
 
-plot(dem_reg_20,
+plot(dem_reg_30,
      add.legend=TRUE,
      points.pch = 19, ci.area = F, add.cor = T, 
      digits = list(coef = 3, cor = 3),
@@ -235,14 +242,16 @@ plot(dem_reg_20,
      identity=F, add.grid=F, sub="")
 
 
-MCResult.plot(dem_reg_10, equal.axis = F, x.lab = "A/C.asqrt(D)", 
-              ylim = c(0, 0.3),
+MCResult.plot(dem_reg_30, equal.axis = F, 
+              ylim = c(0, 0.5),
               digits = list(coef = 3, cor = 3),
-              y.lab = "gs", points.col = "#FF7F5060", points.pch = 19, 
+              y.lab =  ~ g[s] *  " ( mol " * m^-2 * " " * s^-1 * ")",
+              points.col = "brown", points.pch = 19, 
               ci.area = F, ci.area.col = "#0000FF50", 
               identity = F,
               add=F,
-              main = "20oC", sub = "", 
+              main = "30oC", sub = "", 
+              x.lab = expression("A/Ca" ~ sqrt(VPD)),
               add.grid = FALSE, points.cex = 1.5)
 
 
